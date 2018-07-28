@@ -13,14 +13,7 @@ class SC_Data {
     private $customer;
     private $order;
     private $affiliate;
-    private $imporvely_apikey = 'API KEY';
-    private $product_keys = array("id", "name", "price" , "quantity");
-    private $customer_keys = array("first_name", "last_name", "email", "phone_number",
-        "billing_address", "billing_city", "billing_state", "billing_zip",
-        "billing_country");
-    private $order_keys = array("id", "total", "ip_address" , "stripe_id",
-        "shipping_address", "shipping_city", "shipping_state", "shipping_zip",
-        "shipping_country");
+    private $woopra_project = 'startupbros.com'; // set this to your woopra host
 
     function __construct($sc_data)
     {
@@ -30,22 +23,32 @@ class SC_Data {
         $this->customer = $sc_data->customer;
         $this->order = $sc_data->order;
         $this->affiliate = $sc_data->affiliate;
+        $this->coupon = $sc_data->coupon;
     }
 
     function get_post_data()
     {
-        $revenue = $this->order->{$this->order_keys[1]};
-        $improvely_goal = $this->get_goal($this->sc_type);
-        if ($improvely_goal == "Refund") {
+        $revenue = $this->product->price;
+        $woopra_event = $this->get_goal($this->sc_type);
+        if ($woopra_event == "Refund") {
             $revenue = -1 * abs($revenue);
         }
-        $post_data = array('key' => $this->imporvely_apikey,
-            'project' => 1,
-            'reference' => $this->order->{$this->order_keys[0]},
-            'label' => $this->customer->{$this->customer_keys[2]},
-            'previous_reference' => '',
-            'revenue' => $revenue,
-            'goal' => $improvely_goal);
+
+        $post_data = array(
+            'project' => $this->woopra_project,
+            'event' => $woopra_event,
+            'cv_email' => $this->customer->email,
+            'cv_firstname' => $this->customer->first_name,
+            'cv_lastname' => $this->customer->last_name,
+            'cv_phone_number' => $this->customer->phone_number,
+            'ce_product' => $this->product->name,
+            'ce_reference' => $this->order->id,
+            'ce_revenue' => $revenue,
+            'ce_affiliate' => $this->affiliate->id,
+            'ce_coupon' => $this->order->coupon,
+            'ip' => $this->order->ip_address,
+        );
+
         return $post_data;
     }
 
@@ -80,7 +83,7 @@ class SC_Data {
 
 
 class Custom_Curl {
-    private $url = "https://api.improvely.com/v1/conversion.json";
+    private $url = "http://www.woopra.com/track/ce";
     private $options;
     private $ch;
     private $response_data;
@@ -88,7 +91,7 @@ class Custom_Curl {
     function __construct($post_data)
     {
         $this->options = array(
-            CURLOPT_URL			   => $this->url,
+            CURLOPT_URL            => $this->url,
             CURLOPT_RETURNTRANSFER => true,         // return web page
             CURLOPT_HEADER         => false,        // (don't) return headers
             CURLOPT_FOLLOWLOCATION => true,         // follow redirects
