@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Integration Event Reportt</title>
+    <style type="text/css" rel="stylesheet" media="all">
+        table {
+            padding: 0.5em 1.5em;
+            width: 100%;
+        }
+        p {
+            margin: 0;
+            padding: 0;
+            line-height: 2em;
+        }
+        pre {
+            padding: 1em;
+            margin: 0 0 2em 0;
+            background-color: #EDEFF2;
+            white-space: normal;
+            border-radius: 0.4rem;
+        }
+        code {
+            white-space: pre;
+        }
+    </style>
+</html>
+<body>
+
+<table><tr><td>
+    {% for event in events %}
+        <p>{{ event.timestamp }} - {{ event.message }}</p>
+        {% if event.data %}
+            <pre><code style=''>{{ event.data }}</code></pre>
+        {% endif %}
+    {% endfor %}
+</td></tr></table>
+</body>

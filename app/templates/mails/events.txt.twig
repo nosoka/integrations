@@ -1,0 +1,10 @@
+{% for event in events %}
+{{ event.timestamp }} - {{ event.message }}
+{% if event.data %}
+==============================================
+{{ event.data }}
+==============================================
+
+
+{% endif %}
+{% endfor %}
