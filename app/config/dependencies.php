@@ -35,6 +35,9 @@ $container['Apps\SamCart'] = function ($c) {
 $container['Apps\Woopra'] = function ($c) {
     return new Apps\Woopra($c['logger'], $c['guzzle']);
 };
+$container['Apps\Improvely'] = function ($c) {
+    return new Apps\Improvely($c['logger'], $c['guzzle']);
+};
 $container['Libraries\Mailer'] = function ($c) {
     return new Libraries\Mailer($c['settings']);
 };
@@ -42,4 +45,10 @@ $container['Integrations\SamCartToWoopra'] = function ($c) {
     return new Integrations\SamCartToWoopra($c['request'], $c['response'], $c['view'],
         $c['session'], $c['logger'], $c['settings'],
         $c['Apps\SamCart'], $c['Apps\Woopra'], $c['Libraries\Mailer']);
+};
+
+$container['Integrations\SamCartToImprovely'] = function ($c) {
+    return new Integrations\SamCartToImprovely($c['request'], $c['response'], $c['view'],
+        $c['session'], $c['logger'], $c['settings'],
+        $c['Apps\SamCart'], $c['Apps\Improvely'], $c['Libraries\Mailer']);
 };

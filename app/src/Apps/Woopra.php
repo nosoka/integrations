@@ -8,7 +8,7 @@ class Woopra
     private $project;
     private $eventUrl;
 
-    public function __construct(LoggerInterface $logger, $guzzle) {
+    public function __construct(LoggerInterface $logger, Client $guzzle) {
         $this->project  = getenv('WOOPRA_PROJECT');
         $this->eventUrl = getenv('WOOPRA_TRACK_EVENT_URL');
         $this->logger   = $logger;
