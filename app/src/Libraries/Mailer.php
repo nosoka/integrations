@@ -1,4 +1,4 @@
-<?php namespace Libraries;
+<?php namespace Startupbros\Libraries;
 
 use Slim\Collection;
 use Swift_MailTransport;

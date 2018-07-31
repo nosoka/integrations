@@ -1,22 +1,21 @@
-<?php namespace Integrations;
+<?php namespace Startupbros\Integrations;
 
-use Apps\SamCart;
-use Apps\Woopra;
+use Startupbros\Apps\SamCart;
+use Startupbros\Apps\Woopra;
+use Startupbros\Libraries\Mailer;
 use Psr\Log\LoggerInterface;
 use Slim\Collection;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use SlimSession\Helper;
-use Libraries\Mailer;
 use Swift_Message;
 use Swift_Attachment;
 
 class SamCartToWoopra
 {
-    private $scData = null;
-    private $woopraPayload = null;
-    private $timeline;
+    private $scData;
+    private $woopraPayload;
 
     public function __construct(Request $request, Response $response, Twig $view, Helper $session,
         LoggerInterface $logger, Collection $settings, SamCart $samcart, Woopra $woopra, Mailer $mailer) {

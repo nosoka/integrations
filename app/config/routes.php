@@ -1,4 +1,4 @@
 <?php
 
-// $app->post("/samcart", "Integrations\SamCartToImprovely:run");
-$app->post("/samcart", "Integrations\SamCartToWoopra:run");
+// $app->post("/samcart", "Startupbros\Integrations\SamCartToImprovely:run");
+$app->post("/samcart", "Startupbros\Integrations\SamCartToWoopra:run");

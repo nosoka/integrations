@@ -1,4 +1,4 @@
-<?php namespace Apps;
+<?php namespace Startupbros\Apps;
 
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;

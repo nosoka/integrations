@@ -30,6 +30,6 @@ WOOPRA_PROJECT=''
 ```
 
 #### TODO
-- write improvely integration to show the app can be used for multiple integrations
+- ~~write improvely integration to show the app can be used for multiple integrations~~
 - find a better way instead of using $_session to store temp data
 - find better dependency injection as slim DI is restrictive (low priority)

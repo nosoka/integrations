@@ -1,14 +1,14 @@
-<?php namespace Integrations;
+<?php namespace Startupbros\Integrations;
 
-use Apps\SamCart;
-use Apps\Improvely;
+use Startupbros\Apps\SamCart;
+use Startupbros\Apps\Improvely;
+use Startupbros\Libraries\Mailer;
 use Psr\Log\LoggerInterface;
 use Slim\Collection;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
 use SlimSession\Helper;
-use Libraries\Mailer;
 use Swift_Message;
 use Swift_Attachment;
 

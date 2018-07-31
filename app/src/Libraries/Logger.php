@@ -1,4 +1,4 @@
-<?php namespace Libraries;
+<?php namespace Startupbros\Libraries;
 
 use Monolog\Logger as MonologLogger;
 

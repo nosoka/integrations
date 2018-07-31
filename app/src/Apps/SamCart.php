@@ -1,4 +1,4 @@
-<?php namespace Apps;
+<?php namespace Startupbros\Apps;
 
 use Psr\Log\LoggerInterface;
 
