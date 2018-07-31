@@ -2,12 +2,12 @@
 This is an app to host all your custom integrations
 
 #### Installation
-Download or git clone or the repository into a sub-folder on the server
+- Setup the app locally on your laptop/desktop
+- Push your changes using rsync/sftp to the server
+
+Download or git clone or the repository into a sub-folder locally on your laptop
 ```bash
-go to the root directory of your website
-$ mkdir integrations
-$ cd integrations
-$ git clone git@bitbucket.org:pasok/integrations.git .
+$ git clone git@bitbucket.org:startupbros/integrations.git integrations
 ```
 
 Use [Composer](https://getcomposer.org/) to install dependencies
@@ -27,6 +27,16 @@ MAIL_TO_ADDRESS='example@example.com'
 
 # woopra project id
 WOOPRA_PROJECT=''
+```
+**Congratulations**. You are set to develop the app locally. Happy coding.
+
+Push your changes to the server using rsync
+```
+# dry-run/verify the list of files/folder that need to be pushed
+rsync --exclude '.env' --exclude '.git' --exclude 'logs' -anv ./ startupbros@startupbros.ssh.wpengine.net:~/sites/startupbros/integrations/
+
+# push the changes to server
+rsync --exclude '.env' --exclude '.git' --exclude 'logs' -anv ./ startupbros@startupbros.ssh.wpengine.net:~/sites/startupbros/integrations/
 ```
 
 #### TODO
