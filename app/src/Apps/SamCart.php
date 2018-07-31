@@ -1,6 +1,6 @@
 <?php namespace Startupbros\Apps;
 
-use Psr\Log\LoggerInterface;
+use Startupbros\Libraries\Logger;
 
 class Samcart
 {
@@ -9,7 +9,7 @@ class Samcart
         'RecurringPaymentRecovered', 'RecurringPaymentSucceeded'
     ];
 
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(Logger $logger) {
         $this->logger = $logger;
     }
 

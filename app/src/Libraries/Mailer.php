@@ -1,55 +1,39 @@
 <?php namespace Startupbros\Libraries;
 
-use Slim\Collection;
+use Swift_Mailer;
 use Swift_MailTransport;
 use Swift_SendmailTransport;
 use Swift_SmtpTransport;
-use Swift_Mailer;
 use Openbuildings\Swiftmailer\CssInlinerPlugin;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
-class Mailer
+class Mailer extends Swift_Mailer
 {
+    private $transport;
 
-    public function __construct(Collection $settings)
-    {
-        $this->settings = $settings;
-
-        $this->setTransport();
-        $this->setMailer();
+    public function __construct($settings = []) {
+        $this->setTransport($settings);
+        parent::__construct($this->transport);
     }
 
-    public function setTransport()
+    public function setTransport($settings)
     {
-        if($this->settings['email']['driver'] == 'mail') {
+        if($settings['email']['driver'] == 'mail') {
             $this->transport = Swift_MailTransport::newInstance();
-        } else if($this->settings['email']['driver'] == 'sendmail') {
+        } else if($settings['email']['driver'] == 'sendmail') {
             $this->transport = Swift_SendmailTransport::newInstance();
-        } else if($this->settings['email']['driver'] == 'smtp') {
+        } else if($settings['email']['driver'] == 'smtp') {
             $this->transport = Swift_SmtpTransport::newInstance();
-            $this->transport->setHost($this->settings['email']['smtp']['server']);
-            $this->transport->setPort($this->settings['email']['smtp']['port']);
-            $this->transport->setUsername($this->settings['email']['smtp']['username']);
-            $this->transport->setPassword($this->settings['email']['smtp']['password']);
-            $this->transport->setEncryption($this->settings['email']['smtp']['encryption']);
+            $this->transport->setHost($settings['email']['smtp']['server']);
+            $this->transport->setPort($settings['email']['smtp']['port']);
+            $this->transport->setUsername($settings['email']['smtp']['username']);
+            $this->transport->setPassword($settings['email']['smtp']['password']);
+            $this->transport->setEncryption($settings['email']['smtp']['encryption']);
         } else {
-            return false;
+            return;
         }
-    }
-
-    public function setMailer()
-    {
-        $this->mailer = new Swift_Mailer($this->transport);
-        $this->mailer->registerPlugin(new CssInlinerPlugin(new CssToInlineStyles()));
-    }
-
-    public function getTransport()
-    {
-        return $this->transport;
-    }
-
-    public function getMailer()
-    {
-        return $this->mailer;
+        if(isset($this->transport)) {
+            $this->transport->registerPlugin(new CssInlinerPlugin(new CssToInlineStyles()));
+        }
     }
 }

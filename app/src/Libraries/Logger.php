@@ -4,8 +4,7 @@ use Monolog\Logger as MonologLogger;
 
 class Logger extends MonologLogger
 {
-    public function event($message, array $context = array())
-    {
+    public function event($message, array $context = array()) {
         if(!is_string($context['data'])) {
             $context['data'] = json_encode($context['data'], JSON_PRETTY_PRINT);
         }

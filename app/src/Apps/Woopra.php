@@ -1,14 +1,14 @@
 <?php namespace Startupbros\Apps;
 
 use GuzzleHttp\Client;
-use Psr\Log\LoggerInterface;
+use Startupbros\Libraries\Logger;
 
 class Woopra
 {
     private $project;
     private $eventUrl;
 
-    public function __construct(LoggerInterface $logger, Client $guzzle) {
+    public function __construct(Logger $logger, Client $guzzle) {
         $this->project  = getenv('WOOPRA_PROJECT');
         $this->eventUrl = getenv('WOOPRA_TRACK_EVENT_URL');
         $this->logger   = $logger;

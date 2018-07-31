@@ -2,14 +2,14 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Psr\Log\LoggerInterface;
+use Startupbros\Libraries\Logger;
 
 class Improvely
 {
     private $project;
     private $eventUrl;
 
-    public function __construct(LoggerInterface $logger, Client $guzzle) {
+    public function __construct(Logger $logger, Client $guzzle) {
         $this->logger = $logger;
         $this->guzzle = $guzzle;
         $this->eventUrl = getenv('IMPROVELY_CONVERSION_URL');

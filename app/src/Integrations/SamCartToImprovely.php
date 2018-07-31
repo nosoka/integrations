@@ -3,7 +3,7 @@
 use Startupbros\Apps\SamCart;
 use Startupbros\Apps\Improvely;
 use Startupbros\Libraries\Mailer;
-use Psr\Log\LoggerInterface;
+use Psr\Container\ContainerInterface;
 use Slim\Collection;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -17,30 +17,27 @@ class SamCartToImprovely
     private $scData;
     private $improvelyPayload;
 
-    public function __construct(Request $request, Response $response, Twig $view, Helper $session,
-        LoggerInterface $logger, Collection $settings, SamCart $samcart, Improvely $improvely, Mailer $mailer) {
-        $this->request   = $request;
-        $this->response  = $response;
-        $this->view      = $view;
-        $this->session   = $session;
-        $this->logger    = $logger;
-        $this->samcart   = $samcart;
+    public function __construct(Helper $session, Mailer $mailer, Twig $view,
+        ContainerInterface $c, SamCart $samcart, Improvely $improvely) {
+        $this->view     = $view;
+        $this->session  = $session;
+        $this->samcart  = $samcart;
         $this->improvely = $improvely;
-        $this->mailer    = $mailer;
-        $this->settings  = $settings;
+        $this->mailer   = $mailer;
+        $this->settings = $c->get('settings');
 
         $this->session->set('events', []);
     }
 
-    public function run() {
-        // TODO:: raise/catch any exceptions
+    public function run(Request $request, Response $response) {
+        $this->request = $request;
         $this->processIncomingPayload()
             ->prepareOutgoingPayload()
             ->runIntegration()
             ->sendEmailReport()
             ;
 
-        return $this->response->withJson(['status' => 'success'], 200);
+        return $response->withJson(['status' => 'success'], 200);
     }
 
     public function processIncomingPayload() {
@@ -67,8 +64,7 @@ class SamCartToImprovely
     }
 
     public function sendEmailReport() {
-
-        $events = $this->session->events;
+        $events   = $this->session->events;
         $textBody = $this->view->fetch('mails/events.txt.twig', ['events' => $events]);
         $htmlBody = $this->view->fetch('mails/events.html.twig', ['events' => $events]);
 
@@ -81,6 +77,6 @@ class SamCartToImprovely
             ->attach(Swift_Attachment::fromPath($this->session->logfile))
         ;
 
-        $this->mailer->getMailer()->send($message);
+        $this->mailer->send($message);
     }
 }

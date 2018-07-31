@@ -12,7 +12,8 @@
         "openbuildings/swiftmailer-css-inliner": "^0.5.1",
         "zendframework/zend-math": "^3.1",
         "monolog/monolog": "^1.23",
-        "vlucas/phpdotenv": "^2.5"
+        "vlucas/phpdotenv": "^2.5",
+        "php-di/slim-bridge": "^1.1"
     },
     "autoload": {
         "psr-4": {

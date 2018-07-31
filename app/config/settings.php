@@ -9,6 +9,12 @@ $dotenv->load();
 
 return [
     'settings' => [
+
+        'responseChunkSize' => 4096,
+        'outputBuffering' => 'append',
+        'httpVersion' => '2',
+        'determineRouteBeforeAppMiddleware' => false,
+
         'addContentLengthHeader' => false,
         'displayErrorDetails' => filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOLEAN),
 
