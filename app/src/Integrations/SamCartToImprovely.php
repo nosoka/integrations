@@ -1,32 +1,20 @@
 <?php namespace Startupbros\Integrations;
 
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Startupbros\Apps\SamCart;
 use Startupbros\Apps\Improvely;
 use Startupbros\Libraries\Mailer;
-use Psr\Container\ContainerInterface;
-use Slim\Collection;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Views\Twig;
-use SlimSession\Helper;
-use Swift_Message;
-use Swift_Attachment;
 
 class SamCartToImprovely
 {
-    private $scData;
+    private $samcartPayload;
     private $improvelyPayload;
 
-    public function __construct(Helper $session, Mailer $mailer, Twig $view,
-        ContainerInterface $c, SamCart $samcart, Improvely $improvely) {
-        $this->view     = $view;
-        $this->session  = $session;
-        $this->samcart  = $samcart;
+    public function __construct(Mailer $mailer, SamCart $samcart, Improvely $improvely) {
+        $this->samcart   = $samcart;
         $this->improvely = $improvely;
-        $this->mailer   = $mailer;
-        $this->settings = $c->get('settings');
-
-        $this->session->set('events', []);
+        $this->mailer    = $mailer;
     }
 
     public function run(Request $request, Response $response) {
@@ -41,12 +29,14 @@ class SamCartToImprovely
     }
 
     public function processIncomingPayload() {
-        $this->scData = $this->samcart->processNotification(json_decode($this->request->getBody()->getContents()));
+        $this->samcartPayload = $this->samcart->processNotification(
+            json_decode($this->request->getBody()->getContents())
+        );
         return $this;
     }
 
     public function prepareOutgoingPayload() {
-        $sc = $this->scData;
+        $sc = $this->samcartPayload; // just a temp variable to save typing/screen space while mapping the data
         $this->improvelyPayload = array(
             'goal'               => $sc->event,
             'revenue'            => $sc->revenue,
@@ -64,19 +54,7 @@ class SamCartToImprovely
     }
 
     public function sendEmailReport() {
-        $events   = $this->session->events;
-        $textBody = $this->view->fetch('mails/events.txt.twig', ['events' => $events]);
-        $htmlBody = $this->view->fetch('mails/events.html.twig', ['events' => $events]);
-
-        $message = (new Swift_Message())
-            ->setSubject('New Integration Event:: SamCart to Improvely')
-            ->setFrom([$this->settings['email']['from']['address'] => $this->settings['email']['from']['name']])
-            ->setTo([$this->settings['email']['to']['address'] => $this->settings['email']['to']['name']])
-            ->setBody(html_entity_decode($textBody))
-            ->addPart($htmlBody, 'text/html')
-            ->attach(Swift_Attachment::fromPath($this->session->logfile))
-        ;
-
-        $this->mailer->send($message);
+        $this->mailer->sendEventsReport(['subject' => 'New Integration Event:: SamCart to Improvely']);
+        return $this;
     }
 }

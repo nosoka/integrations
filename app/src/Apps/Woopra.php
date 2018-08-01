@@ -1,6 +1,7 @@
 <?php namespace Startupbros\Apps;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Startupbros\Libraries\Logger;
 
 class Woopra
@@ -20,7 +21,11 @@ class Woopra
 
         $this->logger->event("Payload posted to Woopra", ['data' => $eventData]);
 
-        $response = $this->guzzle->post($this->eventUrl, ['form_params' => $eventData]);
+        try {
+            $response = $this->guzzle->post($this->eventUrl, ['form_params' => $eventData]);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+        }
 
         $this->logger->event("Response received from Woopra - {$response->getStatusCode()} {$response->getReasonPhrase()}", ['data' => (string) $response->getBody(), 'nolog' => true]);
 

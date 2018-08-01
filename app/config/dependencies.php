@@ -11,8 +11,8 @@ return [
         return $logger;
     },
 
-    \Startupbros\Libraries\Mailer::class => function ($c) {
-        return new Startupbros\Libraries\Mailer($c->get('settings'));
+    \Startupbros\Libraries\Mailer::class => function ($c, \Slim\Views\Twig $view) {
+        return new Startupbros\Libraries\Mailer($c->get('settings'), $view);
     },
 
     \Slim\Views\Twig::class => function ($c) {

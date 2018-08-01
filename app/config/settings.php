@@ -1,11 +1,11 @@
 <?php
 
-// TODO:: find a better way to store temp data instead of $_session
-$_SESSION['integrationId'] = \Zend\Math\Rand::getString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-$_SESSION['logfile'] = __DIR__ . '/../../logs/' . date('Y_m_d-H_i_s-') . $_SESSION['integrationId'] . '.html';
-
 $dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
 $dotenv->load();
+
+// TODO:: find a better way to store temp data instead of using $_session
+$_SESSION['events']   = [];
+$_SESSION['eventLog'] = __DIR__ . '/../../logs/' . date('Ymd-His-') . rand() . '.html';
 
 return [
     'settings' => [
@@ -24,7 +24,7 @@ return [
 
         'logger' => [
             'name' => 'Integration',
-            'path' => $_SESSION['logfile'],
+            'path' => $_SESSION['eventLog'],
         ],
         'email' => [
             'driver' => getenv('MAIL_DRIVER'), // ex: mail/sendmail/smtp

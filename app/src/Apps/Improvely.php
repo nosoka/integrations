@@ -12,7 +12,7 @@ class Improvely
     public function __construct(Logger $logger, Client $guzzle) {
         $this->logger = $logger;
         $this->guzzle = $guzzle;
-        $this->eventUrl = getenv('IMPROVELY_CONVERSION_URL');
+        $this->conversionUrl = getenv('IMPROVELY_CONVERSION_URL');
     }
 
     public function conversion($payload = []) {
@@ -22,7 +22,7 @@ class Improvely
         $this->logger->event("Payload posted to Improvely", ['data' => $payload]);
 
         try {
-            $response = $this->guzzle->post($this->eventUrl, ['form_params' => $payload]);
+            $response = $this->guzzle->post($this->conversionUrl, ['form_params' => $payload]);
         } catch (ClientException $e) {
             $response = $e->getResponse();
         }
