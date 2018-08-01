@@ -15,7 +15,7 @@ class Samcart
 
     public function processNotification($payload) {
 
-        $this->logger->event("Received payload from SamCart", ['data' => $payload]);
+        $this->logger->info("Received payload from SamCart", ['data' => $payload]);
 
         $event   = isset($payload->type) ? $payload->type : null;
         $event   = in_array(strtolower($event), array_map('strtolower', $this->knownEvents)) ? $event : 'Samcart';

@@ -17,17 +17,25 @@ class Woopra
     }
 
     public function trackEvent($eventData = []) {
+        $this->logger->info("Payload posted to Woopra", ['data' => $eventData]);
+
+        $message              = "Response received from Woopra";
         $eventData['project'] = $this->project;
 
-        $this->logger->event("Payload posted to Woopra", ['data' => $eventData]);
-
+        // TODO:: maybe log guzzle exceptions everywhere from inside a wrapper class or middleware
         try {
             $response = $this->guzzle->post($this->eventUrl, ['form_params' => $eventData]);
         } catch (ClientException $e) {
-            $response = $e->getResponse();
+            $this->logger->error($message, ['data' => json_decode($e->getResponse()->getBody())]);
+            return;
+        } catch (ConnectException $e) {
+            $this->logger->error($message, ['data' => $e->getMessage()]);
+            return;
         }
 
-        $this->logger->event("Response received from Woopra - {$response->getStatusCode()} {$response->getReasonPhrase()}", ['data' => (string) $response->getBody(), 'nolog' => true]);
+        $message .= " - {$response->getStatusCode()} {$response->getReasonPhrase()}";
+        $body     = json_decode($response->getBody(), true) ?: (string) $response->getBody();
+        $this->logger->success($message, ['data' => $body]);
 
         return $response;
     }

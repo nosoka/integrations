@@ -19,6 +19,10 @@
         table {
             padding: 0.5em 1.5em;
             width: 100%;
+            margin: 0;
+            -premailer-width: 100%;
+            -premailer-cellpadding: 0;
+            -premailer-cellspacing: 0;
         }
         td {
           word-break: break-word;
@@ -32,22 +36,48 @@
         pre {
             padding: 1em;
             margin: 0 0 2em 0;
-            background-color: #EDEFF2;
             white-space: normal;
             border-radius: 0.4rem;
         }
         code {
-            white-space: pre;
+            white-space: pre-wrap;
+        }
+        .event {
+            color: #383d41;
+            background-color: #e2e3e5;
+            border-color: #d6d8db;
+        }
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .info {
+            color: #383d41;
+            background-color: #e2e3e5;
+            border-color: #d6d8db;
+        }
+        .warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
         }
     </style>
 </html>
 <body>
 
-<table><tr><td>
+<table width="100%" cellpadding="0" cellspacing="0"><tr><td>
     {% for event in events %}
         <p>{{ event.timestamp }} - {{ event.message }}</p>
-        {% if event.data %}
-            <pre><code style=''>{{ event.data }}</code></pre>
+        {% if event.context.data %}
+            <pre class='{{ event.context.level }}'>
+                <code>{{ event.context.data }}</code>
+            </pre>
         {% endif %}
     {% endfor %}
 </td></tr></table>
