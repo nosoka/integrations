@@ -1,4 +1,4 @@
-<?php namespace Startupbros\Libraries;
+<?php namespace App\Libraries;
 
 use Slim\Views\Twig;
 use Swift_Attachment;

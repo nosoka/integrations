@@ -1,8 +1,8 @@
-<?php namespace Startupbros\Apps;
+<?php namespace App\Apps;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Startupbros\Libraries\Logger;
+use App\Libraries\Logger;
 
 class Woopra
 {

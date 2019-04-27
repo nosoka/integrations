@@ -1,5 +1,5 @@
 {
-    "name": "startupbros/integrations",
+    "name": "pasok/integrations",
     "description": "app to host all custom integrations",
     "license": "proprietary",
     "require": {
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Startupbros\\" : [ "./app/src" ]
+            "App\\" : [ "./app/src" ]
         }
     }
 }

@@ -1,6 +1,6 @@
-<?php namespace Startupbros\Apps;
+<?php namespace App\Apps;
 
-use Startupbros\Libraries\Logger;
+use App\Libraries\Logger;
 
 class Samcart
 {

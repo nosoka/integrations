@@ -1,10 +1,10 @@
-<?php namespace Startupbros\Integrations;
+<?php namespace App\Integrations;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Startupbros\Apps\SamCart;
-use Startupbros\Apps\Woopra;
-use Startupbros\Libraries\Mailer;
+use App\Apps\SamCart;
+use App\Apps\Woopra;
+use App\Libraries\Mailer;
 
 class SamCartToWoopra
 {

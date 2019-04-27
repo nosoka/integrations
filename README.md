@@ -1,13 +1,11 @@
 ## Integrations
-This is an app to host all your custom integrations
+This is an app to host custom samcart integrations. events(like orders, refunds) received from samcart are processed and posted to analytics apps like woopra/improvely.
+ref: https://intercom.help/samcart/integrations/other/samcart-notification-url
 
 #### Installation
-- Setup the app locally on your laptop/desktop
-- Push your changes using rsync/sftp to the server
-
 Download or git clone or the repository into a sub-folder locally on your laptop
 ```bash
-$ git clone git@bitbucket.org:startupbros/integrations.git integrations
+$ git clone git@bitbucket.org:pasok/integrations.git integrations
 ```
 
 Use [Composer](https://getcomposer.org/) to install dependencies
@@ -23,20 +21,14 @@ $ cp app/.env.example app/.env
 Make sure to set these properties to desired values in app/.env
 ```bash
 # integration report will be sent to this email
-MAIL_TO_ADDRESS='example@example.com'
+MAIL_TO_ADDRESS=''
 
-# woopra project id
+# for woopra integration
 WOOPRA_PROJECT=''
-```
-**Congratulations**. You are set to develop the app locally. Happy coding.
 
-Push your changes to the server using rsync
-```
-# dry-run/verify the list of files/folder that need to be pushed
-rsync --exclude '.env' --exclude '.git' --exclude 'logs' -anv ./ startupbros@startupbros.ssh.wpengine.net:~/sites/startupbros/integrations/
-
-# push the changes to server
-rsync --exclude '.env' --exclude '.git' --exclude 'logs' -anv ./ startupbros@startupbros.ssh.wpengine.net:~/sites/startupbros/integrations/
+#for improvely integration
+IMPROVELY_API_KEY=''
+IMPROVELY_PROJECT=''
 ```
 
 #### TODO
